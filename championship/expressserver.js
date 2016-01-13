@@ -1,6 +1,15 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var process = require("process");
+
 var dao = require('./dao');
+var DbConnector = require("./dbconnector");
+
+var connector = new DbConnector();
+connector.parse(process.env.GTRCHAMP_DATABASE);
+console.log(connector);
+dao.connect(connector);
+
 
 var app = express() ; 
 
