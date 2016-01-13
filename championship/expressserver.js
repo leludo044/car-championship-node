@@ -46,9 +46,12 @@ app.put('/championships', function (request, response) {
 app.post('/championships', function (request, response) {
     console.log(request.body);
     dao.create(request.body, function (err, insertedId) {
-        console.log(insertedId);
+        if (err) {
+            response.status(409).json({ "message": err });
+        } else {
+            response.status(201).end();
+        }
     });
-    response.end();
 });
 
 app.delete('/championships/:id', function (request, response) {

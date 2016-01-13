@@ -70,8 +70,10 @@ class Dao {
             function (err, result) {
                 if (err) {
                     console.log(err);
+                    callback(err, -1) ;
+                } else {
+                    callback(err, result.insertId);
                 }
-                callback(err, result.insertId);
             });
     };
 
