@@ -17,14 +17,17 @@ var checkId = function (id) {
     return isValid;
 };
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'heroku_0d3bcca37c58950'
-});
+var connection ;
+var connect = function (dbConnector) {
+    connection = mysql.createConnection({
+        host: dbConnector.hostname,
+        user: dbConnector.username,
+        password: dbConnector.password,
+        database: dbConnector.database
+    });
+    connection.connect();
+};
 
-connection.connect();
 
 var findAll = function (callback) {
     connection.query('select * from championnats',
@@ -92,3 +95,4 @@ module.exports.find = find;
 module.exports.close = function () {
     connection.end();
 };
+module.exports.connect = connect ;
