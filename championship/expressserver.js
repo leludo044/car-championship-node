@@ -4,64 +4,16 @@ var process = require("process");
 
 var Dao = require('./dao');
 var DbConnector = require("./dbconnector");
-
+var championshipRouter = require("./championship-router");
 
 var connector = new DbConnector();
 connector.parse(process.env.GTRCHAMP_DATABASE);
 console.log(connector);
 
 var dao = new Dao(connector);
+championshipRouter.dao(dao);
 
 var app = express();
-
 app.use(bodyParser.json());
-
-app.get('/championships', function (request, response) {
-    dao.findAll(function (championships) {
-        response.json(championships);
-    });
-});
-
-app.get('/championships/:id', function (request, response) {
-    dao.find(request.params.id, function (error, championship) {
-        if (!error) {
-            response.json(championship);
-        } else {
-            response.status(404).json({ "message": error });
-        }
-    });
-});
-
-app.put('/championships', function (request, response) {
-    console.log(request.body);
-    dao.update(request.body, function (err, insertedId) {
-        if (err) {
-            response.status(404).json({ "message": err });
-        } else {
-            response.end();
-        }
-    });
-});
-
-app.post('/championships', function (request, response) {
-    console.log(request.body);
-    dao.create(request.body, function (err, insertedId) {
-        if (err) {
-            response.status(409).json({ "message": err });
-        } else {
-            response.status(201).end();
-        }
-    });
-});
-
-app.delete('/championships/:id', function (request, response) {
-    dao.delete(request.params.id, function (err, affectdRows) {
-        if (err) {
-            response.status(404).json({ "message": err });
-        } else {
-            response.end();
-        }
-    })
-});
-
+app.use('/', championshipRouter);
 app.listen(3000);
