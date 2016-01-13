@@ -57,13 +57,23 @@ var find = function (id, callback) {
     }
 };
 
-module.exports.save = function (championship, callback) {
+module.exports.create = function (championship, callback) {
     connection.query('insert into championnats set ?', championship,
         function (err, result) {
             if (err) {
                 console.log(err);
             }
             callback(err, result.insertId);
+        });
+};
+
+module.exports.update = function (championship, callback) {
+    connection.query('update championnats set libelle=? where id=?', [championship.libelle, championship.id],
+        function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            callback(err, result.affectedRows);
         });
 };
 

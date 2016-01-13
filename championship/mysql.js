@@ -7,7 +7,7 @@ dao.findAll(function (championships) {
     console.log(championships);
 });
 
-dao.find('a', function (err, championship) {
+dao.find(1, function (err, championship) {
     if (err) {
         console.log(err);
     } else {
@@ -15,15 +15,26 @@ dao.find('a', function (err, championship) {
     }
 });
 
-/*
-dao.save({id:3, libelle:"toto"}, function(err, insertedId) {
-    console.log(insertedId);
-})
 
-dao.delete(3, function(err, affectdRows) {
-    console.log(affectdRows);
+dao.create({id:3, libelle:"toto"}, function(err, insertedId) {
+    console.log("Create "+insertedId);
 })
-*/
+dao.findAll(function (championships) {
+    console.log(championships);
+});
+dao.update({id:3, libelle:"titi"}, function(err, affectdRows) {
+    console.log("Update " + affectdRows);
+})
+dao.findAll(function (championships) {
+    console.log(championships);
+});
+dao.delete(3, function(err, affectdRows) {
+    console.log("Delete " + affectdRows);
+})
+dao.findAll(function (championships) {
+    console.log(championships);
+});
+
 
 
 var url = require('url');

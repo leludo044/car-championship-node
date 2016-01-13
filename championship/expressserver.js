@@ -27,11 +27,26 @@ app.get('/championships/:id', function(request, response) {
 		});
 	});
 
-app.post('/championships', function(request, response) {
+app.put('/championships', function(request, response) {
     console.log(request.body);
-    dao.save(request.body, function(err, insertedId){
+    dao.update(request.body, function(err, insertedId){
         console.log(insertedId);
     });
+    response.end() ;
+});
+
+app.post('/championships', function(request, response) {
+    console.log(request.body);
+    dao.create(request.body, function(err, insertedId){
+        console.log(insertedId);
+    });
+    response.end() ;
+});
+
+app.delete('/championships/:id', function(request, response) {
+    dao.delete(request.params.id, function(err, affectdRows) {
+        console.log(affectdRows);
+    })    
     response.end() ;
 });
 
