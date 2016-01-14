@@ -4,13 +4,13 @@ var router = express.Router();
 
 var dao ;
 
-router.get('/championships', function (request, response) {
+router.get('/', function (request, response) {
     dao.findAll(function (championships) {
         response.json(championships);
     });
 });
 
-router.get('/championships/:id', function (request, response) {
+router.get('/:id', function (request, response) {
     dao.find(request.params.id, function (error, championship) {
         if (!error) {
             response.json(championship);
@@ -20,7 +20,7 @@ router.get('/championships/:id', function (request, response) {
     });
 });
 
-router.put('/championships', function (request, response) {
+router.put('/', function (request, response) {
     console.log(request.body);
     dao.update(request.body, function (err, insertedId) {
         if (err) {
@@ -31,7 +31,7 @@ router.put('/championships', function (request, response) {
     });
 });
 
-router.post('/championships', function (request, response) {
+router.post('/', function (request, response) {
     console.log(request.body);
     dao.create(request.body, function (err, insertedId) {
         if (err) {
@@ -42,7 +42,7 @@ router.post('/championships', function (request, response) {
     });
 });
 
-router.delete('/championships/:id', function (request, response) {
+router.delete('/:id', function (request, response) {
     dao.delete(request.params.id, function (err, affectdRows) {
         if (err) {
             response.status(404).json({ "message": err });
@@ -52,6 +52,6 @@ router.delete('/championships/:id', function (request, response) {
     })
 });
 module.exports = router;
-module.exports.dao = function(champioshipDao) {
-    dao = champioshipDao;
+module.exports.dao = function(specificDao) {
+    dao = specificDao;
 }
