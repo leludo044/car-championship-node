@@ -109,11 +109,13 @@ class DefaultDao {
     };
     
     delete(id, callback) {
+        let self = this ;
+
         this.connection.query('delete from ' + this.tableName + ' where id=?', id,
             function (err, result) {
                 if (!err) {
                     if (result.affectedRows == 0) {
-                        err = this.entityName + " #" + id + " not deleted !";
+                        err = self.entityName + " #" + id + " not deleted !";
                     }
                 }
                 callback(err, result.affectedRows);
