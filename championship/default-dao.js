@@ -87,9 +87,14 @@ class DefaultDao {
         let params = [];
         let self = this ;
 
+        let more = false;
         this.updateStategy.forEach(function (element) {
+            if (more) {
+                query += ', '
+            }
             query += (element + '=? ');
             params.push(entity[element]);
+            more = true ;
         }, this);
         query += 'where id=?';
 
