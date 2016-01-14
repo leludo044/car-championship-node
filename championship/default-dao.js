@@ -82,6 +82,32 @@ class DefaultDao {
             });
     };
 
+    update(entity, callback) {
+        let query = 'update ' + this.tableName + ' set ';
+        let params = [];
+        let self = this ;
+
+        this.updateStategy.forEach(function (element) {
+            query += (element + '=? ');
+            params.push(entity[element]);
+        }, this);
+        query += 'where id=?';
+
+        params.push(entity.id);
+
+        console.log(query);
+        console.log(params);
+        this.connection.query(query, params,
+            function (err, result) {
+                if (!err) {
+                    if (result.affectedRows == 0) {
+                        err = self.entityName + " #" + entity.id + " not updated !";
+                    }
+                }
+                callback(err, result.affectedRows);
+            });
+    };
+    
     delete(id, callback) {
         this.connection.query('delete from ' + this.tableName + ' where id=?', id,
             function (err, result) {
