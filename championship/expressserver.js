@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var process = require("process");
 
-var Dao = require('./dao');
+var Dao = require('./championship-dao');
 var DriverDao = require('./driver-dao');
 var DbConnector = require("./dbconnector");
 var championshipRouter = require("./championship-router");
