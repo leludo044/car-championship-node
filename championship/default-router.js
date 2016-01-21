@@ -1,57 +1,66 @@
+"use strict";
 
 var express = require('express');
-var router = express.Router();
 
-var dao ;
 
-router.get('/', function (request, response) {
-    dao.findAll(function (championships) {
-        response.json(championships);
-    });
-});
+class DefaultRouter {
+    constructor(specificDao) {
+        this.router = express.Router();
+        this.dao = specificDao;
+        let self = this ;
 
-router.get('/:id', function (request, response) {
-    dao.find(request.params.id, function (error, championship) {
-        if (!error) {
-            response.json(championship);
-        } else {
-            response.status(404).json({ "message": error });
-        }
-    });
-});
+        this.router.get('/', function (request, response) {
+            self.dao.findAll(function (championships) {
+                response.json(championships);
+            });
+        });
 
-router.put('/', function (request, response) {
-    console.log(request.body);
-    dao.update(request.body, function (err, insertedId) {
-        if (err) {
-            response.status(404).json({ "message": err });
-        } else {
-            response.end();
-        }
-    });
-});
+        this.router.get('/:id', function (request, response) {
+            self.dao.find(request.params.id, function (error, championship) {
+                if (!error) {
+                    response.json(championship);
+                } else {
+                    response.status(404).json({ "message": error });
+                }
+            });
+        });
 
-router.post('/', function (request, response) {
-    console.log(request.body);
-    dao.create(request.body, function (err, insertedId) {
-        if (err) {
-            response.status(409).json({ "message": err });
-        } else {
-            response.status(201).end();
-        }
-    });
-});
+        this.router.put('/', function (request, response) {
+            console.log(request.body);
+            self.dao.update(request.body, function (err, insertedId) {
+                if (err) {
+                    response.status(404).json({ "message": err });
+                } else {
+                    response.end();
+                }
+            });
+        });
 
-router.delete('/:id', function (request, response) {
-    dao.delete(request.params.id, function (err, affectdRows) {
-        if (err) {
-            response.status(404).json({ "message": err });
-        } else {
-            response.end();
-        }
-    })
-});
-module.exports = router;
-module.exports.dao = function(specificDao) {
-    dao = specificDao;
+        this.router.post('/', function (request, response) {
+            console.log(request.body);
+            self.dao.create(request.body, function (err, insertedId) {
+                if (err) {
+                    response.status(409).json({ "message": err });
+                } else {
+                    response.status(201).end();
+                }
+            });
+        });
+
+        this.router.delete('/:id', function (request, response) {
+            self.dao.delete(request.params.id, function (err, affectdRows) {
+                if (err) {
+                    response.status(404).json({ "message": err });
+                } else {
+                    response.end();
+                }
+            })
+        });
+    }
+    
+    getRouter() {
+        return this.router ;
+    }
 }
+
+module.exports = DefaultRouter;

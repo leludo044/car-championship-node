@@ -2,36 +2,46 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var process = require("process");
 
+var DbConnector = require("./dbconnector");
+
 var ChampionshipDao = require('./championship-dao');
 var DriverDao = require('./driver-dao');
 var TrackDao = require('./track-dao');
 var CountryDao = require('./country-dao'); 
-var DbConnector = require("./dbconnector");
-var championshipRouter = require("./default-router");
-var driverRouter = require("./default-router");
-var trackRouter = require("./default-router");
-var countryRouter = require("./default-router");
+
+var DefaultRouter = require("./default-router");
 
 var connector = new DbConnector();
 connector.parse(process.env.GTRCHAMP_DATABASE);
 console.log(connector);
 
 var dao = new ChampionshipDao(connector);
-championshipRouter.dao(dao);
+var championshipRouter = new DefaultRouter(dao);
+/*
+championshipRouter.get('/wasrun/:id', function (request, response) {
+    dao.wasRun(request.params.id, function (error, championship) {
+        if (!error) {
+            response.json(championship);
+        } else {
+            response.status(404).json({ "message": error });
+        }
+    });
+});
+*/
 
 var driverDao = new DriverDao(connector);
-driverRouter.dao(driverDao);
+var driverRouter = new DefaultRouter(driverDao);
 
 var trackDao = new TrackDao(connector);
-trackRouter.dao(trackDao);
+var trackRouter = new DefaultRouter(trackDao);
 
 var countryDao = new CountryDao(connector, "pays", "Pays");
-countryRouter.dao(countryDao);
+var countryRouter = new DefaultRouter(countryDao);
 
 var app = express();
 app.use(bodyParser.json());
-app.use('/championship', championshipRouter);
-app.use('/driver', driverRouter);
-app.use('/track', trackRouter);
-app.use('/country', countryRouter);
+app.use('/championship', championshipRouter.getRouter());
+app.use('/driver', driverRouter.getRouter());
+app.use('/track', trackRouter.getRouter());
+app.use('/country', countryRouter.getRouter());
 app.listen(3000);
