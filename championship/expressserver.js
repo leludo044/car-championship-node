@@ -4,14 +4,14 @@ var process = require("process");
 
 var DbConnector = require("./dbconnector");
 
-var ChampionshipDao = require('./championship-dao');
-var DriverDao = require('./driver-dao');
-var TrackDao = require('./track-dao');
-var CountryDao = require('./country-dao'); 
+var ChampionshipDao = require('./championship/championship-dao');
+var DriverDao = require('./driver/driver-dao');
+var TrackDao = require('./track/track-dao');
+var CountryDao = require('./country/country-dao'); 
 
 var DefaultRouter = require('./default-router');
-var DriverRouter = require('./driver-router');
-var TrackRouter = require('./track-router');
+var DriverRouter = require('./driver/driver-router');
+var TrackRouter = require('./track/track-router');
 
 var connector = new DbConnector();
 connector.parse(process.env.GTRCHAMP_DATABASE);

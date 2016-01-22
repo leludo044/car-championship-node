@@ -2,18 +2,18 @@
 
 var mysql = require("mysql");
 var util = require("util");
-var DefaultDao = require('./default-dao');
+var DefaultDao = require('../default-dao');
 
-class TrackDao extends DefaultDao {
+class DriverDao extends DefaultDao {
 
     constructor(dbConnector) {
-        super(dbConnector, 'circuits', 'Track');
-        this.updateStategy = ["nom", "longueur", "idPays"];
+        super(dbConnector, 'pilotes', 'Driver');
+        this.updateStategy = ["nom"];
     }
-    
-    wasRun(id, callback) {
+
+    hasRun(id, callback) {
         if (this.checkId(id)) {
-            this.connection.query('select count(*) as count from resultats where idGrandPrix=?', id,
+            this.connection.query('select count(*) as count from resultats where idPilote=?', id,
                 function (err, rows, fields) {
                     console.log(err);
                     console.log(rows);
@@ -29,7 +29,6 @@ class TrackDao extends DefaultDao {
             callback(error, {});
         }
     };
-
 }
 
-module.exports = TrackDao;
+module.exports = DriverDao;

@@ -2,7 +2,7 @@
 
 var mysql = require("mysql");
 var util = require("util");
-var DefaultDao = require('./default-dao');
+var DefaultDao = require('../default-dao');
 
 class ChampionshipDao extends DefaultDao {
 
