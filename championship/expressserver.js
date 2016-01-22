@@ -10,6 +10,7 @@ var TrackDao = require('./track-dao');
 var CountryDao = require('./country-dao'); 
 
 var DefaultRouter = require('./default-router');
+var DriverRouter = require('./driver-router');
 var TrackRouter = require('./track-router');
 
 var connector = new DbConnector();
@@ -20,7 +21,7 @@ var dao = new ChampionshipDao(connector);
 var championshipRouter = new DefaultRouter(dao);
 
 var driverDao = new DriverDao(connector);
-var driverRouter = new DefaultRouter(driverDao);
+var driverRouter = new DriverRouter(driverDao);
 
 var trackDao = new TrackDao(connector);
 var trackRouter = new TrackRouter(trackDao);
