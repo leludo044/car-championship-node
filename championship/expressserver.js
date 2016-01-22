@@ -9,7 +9,8 @@ var DriverDao = require('./driver-dao');
 var TrackDao = require('./track-dao');
 var CountryDao = require('./country-dao'); 
 
-var DefaultRouter = require("./default-router");
+var DefaultRouter = require('./default-router');
+var TrackRouter = require('./track-router');
 
 var connector = new DbConnector();
 connector.parse(process.env.GTRCHAMP_DATABASE);
@@ -17,23 +18,12 @@ console.log(connector);
 
 var dao = new ChampionshipDao(connector);
 var championshipRouter = new DefaultRouter(dao);
-/*
-championshipRouter.get('/wasrun/:id', function (request, response) {
-    dao.wasRun(request.params.id, function (error, championship) {
-        if (!error) {
-            response.json(championship);
-        } else {
-            response.status(404).json({ "message": error });
-        }
-    });
-});
-*/
 
 var driverDao = new DriverDao(connector);
 var driverRouter = new DefaultRouter(driverDao);
 
 var trackDao = new TrackDao(connector);
-var trackRouter = new DefaultRouter(trackDao);
+var trackRouter = new TrackRouter(trackDao);
 
 var countryDao = new CountryDao(connector, "pays", "Pays");
 var countryRouter = new DefaultRouter(countryDao);
