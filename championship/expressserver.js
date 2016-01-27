@@ -32,8 +32,8 @@ var countryRouter = new DefaultRouter(countryDao);
 
 var app = express();
 app.use(bodyParser.json());
-app.use('/championship', championshipRouter.getRouter());
-app.use('/driver', driverRouter.getRouter());
-app.use('/track', trackRouter.getRouter());
-app.use('/country', countryRouter.getRouter());
+app.use('/api/championship', championshipRouter.getRouter());
+app.use('/api/driver', driverRouter.getRouter());
+app.use('/api/track', trackRouter.getRouter());
+app.use('/api/country', countryRouter.getRouter());
 app.listen(3000);
