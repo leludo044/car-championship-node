@@ -31,9 +31,12 @@ var countryDao = new CountryDao(connector, "pays", "Pays");
 var countryRouter = new DefaultRouter(countryDao);
 
 var app = express();
+app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.json());
 app.use('/api/championship', championshipRouter.getRouter());
 app.use('/api/driver', driverRouter.getRouter());
 app.use('/api/track', trackRouter.getRouter());
 app.use('/api/country', countryRouter.getRouter());
-app.listen(5000);
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
