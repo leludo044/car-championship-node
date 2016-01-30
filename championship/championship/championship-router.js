@@ -9,7 +9,7 @@ class ChampionshipRouter extends DefaultRouter {
         super(specificDao);
         let self = this;
 
-        this.getRouter().get('/:id/race', function (request, response) {
+        this.getRouter().get('/:id/grandprix/list', function (request, response) {
             self.dao.findRaces(request.params.id, function (races) {
                    response.json(races);
             });
@@ -18,6 +18,18 @@ class ChampionshipRouter extends DefaultRouter {
         this.getRouter().get('/:id/run/:trackId', function (request, response) {
             self.dao.organizeRace(request.params.id, request.params.trackId, function (err, affectedRows) {
                    response.json(affectedRows);
+            });
+        });
+        
+        this.getRouter().get('/:id/classement', function (request, response) {
+            self.dao.rank(request.params.id, function(ranks) {
+                response.json(ranks);
+            })
+        });
+
+        this.getRouter().get('/grandprix/:id/resultat', function (request, response) {
+            self.dao.findResults(request.params.id, function (results) {
+                   response.json(results);
             });
         });
     }
