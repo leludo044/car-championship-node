@@ -6,7 +6,7 @@ piloteServices.factory('Circuits', [ '$resource', function($resource) {
 	      },
 	      estcouru: {
 	    	  method: 'GET',
-	    	  params: {info:'estcouru'}
+	    	  params: {info:'wasrun'}
 	      }
 
 	    }	);
