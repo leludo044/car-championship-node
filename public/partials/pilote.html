@@ -1,0 +1,61 @@
+<h2>Gestion des pilotes</h2>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="panel-title">Liste des pilotes</div>
+			</div>
+			<div class="panel-body">
+				<form>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Prénom</th>
+								<th>Date de naissance</th>
+								<th width="100em" />
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat="pilote in pilotes"
+								ng-click="selectionner(pilote, $index)">
+								<td>{{pilote.id}}</td>
+								<td>{{pilote.nom}}</td>
+								<td>{{pilote.dateNaissance}}</td>
+								<td></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td></td>
+								<td><input type="text" class="form-control" id="prenom"
+									placeholder="Prénom" ng-model="formPilote.nom"></td>
+								<td><input type="text" class="form-control"
+									id="dateNaissance" placeholder="Date de naissance"
+									ng-model="formPilote.dateNaissance"></td>
+								<td>
+									<button type="submit" class="btn btn-default"
+										ng-click="ajouter()" ng-hide="selection">
+										<span class="glyphicon glyphicon-plus" aria-hidden="true"
+											title="Ajouter"></span>
+									</button>
+									<button type="submit" class="btn btn-default"
+										ng-click="modifier()" ng-show="selection">
+										<span class="glyphicon glyphicon-ok" aria-hidden="true"
+											title="Modifier"></span>
+										<button type="submit" class="btn btn-default"
+											ng-click="supprimer()" ng-show="formPilote.supprimable">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"
+												title="Supprimer"></span>
+										</button>
+									</button>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="alert alert-success" role="alert" ng-show="message">{{message}}</div>

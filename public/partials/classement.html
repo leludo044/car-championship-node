@@ -1,0 +1,100 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="panel-title">{{championnat.libelle}} - Classement
+					général</div>
+			</div>
+			<div class="panel-body">
+				<div class="col-md-3">
+					<img src="d_1280x1024.jpg" alt="" class="img-rounded">
+				</div>
+				<div class="col-md-9">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Classement</th>
+								<th>Pilote</th>
+								<th>Points</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat="cl in classement">
+								<td>{{$index+1}}</td>
+								<td>{{cl.nom}}</td>
+								<td>{{cl.points}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-7">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title">Grands prix</div>
+			</div>
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Date</th>
+							<th>Circuit</th>
+							<th>Longueur</th>
+							<th>Pays</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="gp in gps" ng-click="resultats(gp.id)">
+							<td>{{gp.id}}</td>
+							<td>{{gp.date|date:'dd/MM/yyyy'}}</td>
+							<td>{{gp.nom}}</td>
+							<td>{{gp.longueur}}</td>
+							<td>{{gp.pays}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-5">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<div class="panel-title">Résultats</div>
+			</div>
+			<div class="panel-body">
+				<div class="alert alert-info" ng-hide="hideMsgSelectionGp"
+					id="results" class="col-text">Veuillez sélectionner un grand
+					prix !</div>
+				<table class="table" ng-show="hideMsgSelectionGp">
+					<thead>
+						<tr>
+							<th>Course</th>
+                            <th>Départ</th>
+							<th>Place</th>
+							<th>Pole</th>
+							<th>Pilote</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="conc in concurrents">
+							<td>{{conc.numCourse}}</td>
+							<td>{{conc.depart}}</td>
+							<td>{{conc.arrivee}}</td>
+							<td><img ng-hide="{{conc.depart!=1}}" src="Accept16.png" /></td>
+							<td>{{conc.nom}}</td>
+							<td>{{conc.points}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+

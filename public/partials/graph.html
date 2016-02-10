@@ -1,0 +1,26 @@
+<div class="panel panel-success">
+	<div class="panel-heading">
+		<div class="panel-title">{{label}}</div>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-6">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Pilote</th>
+						<th>Nombre</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="victoire in stats">
+						<td>{{victoire.name}}</td>
+						<td>{{victoire.count}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<highchart config="config"></highchart>
+		</div>
+	</div>
+</div>
