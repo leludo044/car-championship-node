@@ -7,7 +7,8 @@ class DefaultRouter {
     constructor(specificDao) {
         this.router = express.Router();
         this.dao = specificDao;
-        let self = this ;
+        this.validator = { validate: function(entity) {return true}};
+        let self = this;
 
         this.router.get('/', function (request, response) {
             self.dao.findAll(function (championships) {
@@ -38,13 +39,15 @@ class DefaultRouter {
 
         this.router.post('/', function (request, response) {
             console.log(request.body);
-            self.dao.create(request.body, function (err, insertedId) {
-                if (err) {
-                    response.status(409).json({ "message": err });
-                } else {
-                    response.status(201).end();
-                }
-            });
+            if (self.validator.validate(request.body)) {
+                self.dao.create(request.body, function (err, insertedId) {
+                    if (err) {
+                        response.status(409).json({ "message": err });
+                    } else {
+                        response.status(201).end();
+                    }
+                });
+            }
         });
 
         this.router.delete('/:id', function (request, response) {
@@ -57,9 +60,13 @@ class DefaultRouter {
             })
         });
     }
-    
+
     getRouter() {
-        return this.router ;
+        return this.router;
+    }
+    
+    setValidator(validator) {
+        this.validator = validator;
     }
 }
 

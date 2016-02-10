@@ -6,7 +6,7 @@ piloteServices.factory('Pilotes', [ '$resource', function($resource) {
 	      },
 	      acouru: {
 	    	  method: 'GET',
-	    	  params: {info:'acouru'}
+	    	  params: {info:'hasrun'}
 	      }
 	    }	);
 } ]);

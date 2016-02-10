@@ -2,11 +2,13 @@
 
 var express = require('express');
 var DefaultRouter = require('../default-router');
+var DriverValidator = require('./driver-validator');
 
 
 class DriverRouter extends DefaultRouter {
     constructor(specificDao) {
         super(specificDao);
+        this.setValidator(new DriverValidator()) ;
         let self = this;
 
         this.getRouter().get('/:id/hasrun', function (request, response) {
