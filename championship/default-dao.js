@@ -9,6 +9,13 @@ class DefaultDao {
         this.connect(dbConnector);
         this.tableName = tableName;
         this.entityName = entityName;
+        this.queries = {
+            findAll: 'select * from '+this.tableName,
+            find: 'select * from ' + this.tableName + ' where id=?',
+            create: 'insert into ' + this.tableName + ' set ?',
+            update: 'update ' + this.tableName + ' set ',
+            delete: 'delete from ' + this.tableName + ' where id=?'
+        }
     }
 
     checkId(id) {
@@ -40,7 +47,7 @@ class DefaultDao {
     }
 
     findAll(callback) {
-        this.connection.query('select * from ' + this.tableName,
+        this.connection.query(this.queries.findAll,
             function (err, rows, fields) {
                 if (!err) {
                     callback(rows);
@@ -52,7 +59,7 @@ class DefaultDao {
 
     find(id, callback) {
         if (this.checkId(id)) {
-            this.connection.query('select * from ' + this.tableName + ' where id=?', id,
+            this.connection.query(this.queries.find, id,
                 function (err, rows, fields) {
                     if (!err) {
                         var error;
@@ -71,7 +78,7 @@ class DefaultDao {
     };
 
     create(entity, callback) {
-        this.connection.query('insert into ' + this.tableName + ' set ?', entity,
+        this.connection.query(this.queries.create, entity,
             function (err, result) {
                 if (err) {
                     console.log(err);
@@ -83,7 +90,7 @@ class DefaultDao {
     };
 
     update(entity, callback) {
-        let query = 'update ' + this.tableName + ' set ';
+        let query = this.queries.update;
         let params = [];
         let self = this ;
 
@@ -116,7 +123,7 @@ class DefaultDao {
     delete(id, callback) {
         let self = this ;
 
-        this.connection.query('delete from ' + this.tableName + ' where id=?', id,
+        this.connection.query(this.queries.delete, id,
             function (err, result) {
                 if (!err) {
                     if (result.affectedRows == 0) {
