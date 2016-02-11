@@ -37,12 +37,19 @@ var statRouter = new StatRouter(statDao);
 
 var app = express();
 app.set('port', (process.env.PORT || 3000));
+app.use(express.static(__dirname + '/../public'));
+app.use(express.static(__dirname + '/../node_modules/angular'));
+
 app.use(bodyParser.json());
 app.use('/api/championship', championshipRouter.getRouter());
 app.use('/api/driver', driverRouter.getRouter());
 app.use('/api/track', trackRouter.getRouter());
 app.use('/api/country', countryRouter.getRouter());
 app.use('/api/stat', statRouter.getRouter());
+
+app.get('/', function(request, response) {
+  response.sendFile('index.html');
+});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
