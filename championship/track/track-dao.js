@@ -9,6 +9,7 @@ class TrackDao extends DefaultDao {
     constructor(dbConnector) {
         super(dbConnector, 'circuits', 'Track');
         this.updateStategy = ["nom", "longueur", "idPays"];
+        this.queries.findAll = 'select circuits.*, pays.nom pays from circuits join pays on pays.id = idPays';
     }
     
     wasRun(id, callback) {
