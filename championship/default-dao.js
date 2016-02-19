@@ -66,7 +66,7 @@ class DefaultDao {
                         if (rows.length === 0) {
                             error = this.entityName + " #" + id + " not found !";
                         }
-                        callback(error, rows);
+                        callback(error, rows[0]);
                     } else {
                         console.log('Error while performing Query : ' + err);
                     }
