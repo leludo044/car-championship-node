@@ -24,10 +24,25 @@ class ChampionshipDao extends DefaultDao {
                 callback(err, result.affectedRows);
             });
     };
+
+    cancelRace(championshipId, trackId, callback) {
+        let self = this ;
+
+        this.connection.query('delete from grandsprix where idChampionnat=? and idCircuit=?', [championshipId, trackId],
+            function (err, result) {
+                if (!err) {
+                    if (result.affectedRows == 0) {
+                        err = 'Race not cancelled !';
+                    }
+                }
+                callback(err, result.affectedRows);
+            });
+    };
+
     
     findRaces(championshipId, callback) {
         this.connection.query(`
-select grandsprix.id, circuits.nom, circuits.longueur, grandsprix.date, pays.nom pays from grandsprix
+select grandsprix.id, circuits.id idCircuit, circuits.nom, circuits.longueur, grandsprix.date, pays.nom pays from grandsprix
 inner join championnats on championnats.id = grandsprix.idChampionnat
 join circuits on circuits.id = grandsprix.idCircuit
 join pays on pays.id = circuits.idPays
@@ -85,6 +100,23 @@ order by numCourse asc, points desc`
                     console.log('Error while performing Query : ' + err);
                 }
             });
+    };
+    
+    findRaceCount(id, callback) {
+        if (this.checkId(id)) {
+            this.connection.query('select count(*) as count from grandsprix where idChampionnat=?', id,
+                function (err, rows) {
+                    if (!err) {
+                        console.log(rows);
+                        callback(error,  rows[0].count );
+                    } else {
+                        console.log('Error while performing Query : ' + err);
+                    }
+                });
+        } else {
+            var error = "Bad id format !";
+            callback(error, {});
+        }
     };
 }
 

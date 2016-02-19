@@ -26,7 +26,7 @@ championnatServices.factory('Championnats', [ '$resource', function($resource) {
 		},
 		estcommence: {
 	    	  method: 'GET',
-	    	  params: {type:'estcommence'}
+	    	  params: {type:'isstarted'}
 	      },
 	      update: {
 		        method: 'PUT' // this method issues a PUT request

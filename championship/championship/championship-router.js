@@ -9,13 +9,19 @@ class ChampionshipRouter extends DefaultRouter {
         super(specificDao);
         let self = this;
 
-        this.getRouter().get('/:id/grandprix/list', function (request, response) {
+        this.getRouter().get('/:id/tracks', function (request, response) {
             self.dao.findRaces(request.params.id, function (races) {
                    response.json(races);
             });
         });
         
-        this.getRouter().get('/:id/run/:trackId', function (request, response) {
+        this.getRouter().put('/:id/run/:trackId', function (request, response) {
+            self.dao.organizeRace(request.params.id, request.params.trackId, function (err, affectedRows) {
+                   response.json(affectedRows);
+            });
+        });
+
+        this.getRouter().delete('/:id/run/:trackId', function (request, response) {
             self.dao.organizeRace(request.params.id, request.params.trackId, function (err, affectedRows) {
                    response.json(affectedRows);
             });
@@ -32,6 +38,17 @@ class ChampionshipRouter extends DefaultRouter {
                    response.json(results);
             });
         });
+        
+        this.getRouter().get('/:id/isstarted', function (request, response) {
+            self.dao.findRaceCount(request.params.id, function (error, count) {
+                if (!error) {
+                    response.json({"isStarted": count>0});
+                } else {
+                    response.status(404).json({ "message": error });
+                }
+            });
+        });
+
     }
 
 }

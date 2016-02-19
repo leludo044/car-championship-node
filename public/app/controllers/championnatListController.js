@@ -24,7 +24,7 @@ controllers.controller('ChampionnatListController', ['$scope', '$http', 'Champio
 			$scope.message = "";
 			$scope.index = index;
 			Championnats.estcommence({ chpId: $scope.form.id }, function (response) {
-				if (response.code == 1) {
+				if (response.isStarted) {
 					$scope.form.supprimable = false;
 				} else {
 					$scope.form.supprimable = true;
@@ -92,7 +92,7 @@ controllers.controller('ChampionnatListController', ['$scope', '$http', 'Champio
 			if (exists < 0) {
 				$http({
 					method: 'PUT',
-					url: './api/championship/' + $scope.selected.id + '/' + circuit.id
+					url: './api/championship/' + $scope.selected.id + '/run/' + circuit.id
 				}).then(function () {
 					$scope.selectedTracks.push(index);
 				}, function () {
@@ -101,7 +101,7 @@ controllers.controller('ChampionnatListController', ['$scope', '$http', 'Champio
 			} else {
 				$http({
 					method: 'DELETE',
-					url: './api/championship/' + $scope.selected.id + '/' + circuit.id
+					url: './api/championship/' + $scope.selected.id + '/run/' + circuit.id
 				}).then(function () {
 					delete $scope.selectedTracks[exists];
 				}, function () {
@@ -113,7 +113,7 @@ controllers.controller('ChampionnatListController', ['$scope', '$http', 'Champio
 		var selectTracks = function (allTracks, championshipTracks) {
 			for (var i=0; i<allTracks.length; i++) {
 				for (var j=0; j<championshipTracks.length; j++) {
-					if (allTracks[i].id === championshipTracks[j].circuit.id) {
+					if (allTracks[i].id === championshipTracks[j].idCircuit) {
 						$scope.selectedTracks.push(i);
 					}
 				}
