@@ -29,7 +29,7 @@ controllers.controller('CircuitCtrl', [ '$scope', '$routeParams', 'Circuits',
 				$scope.selection = true;
 				$scope.message = "";
 				$scope.index = index;
-				$scope.formCircuit.indexPays = findPays(circuit.pays.id);
+				$scope.formCircuit.indexPays = findPays(circuit.idPays);
 				Circuits.estcouru({
 					id : $scope.formCircuit.id
 				}, function(response) {
@@ -50,7 +50,7 @@ controllers.controller('CircuitCtrl', [ '$scope', '$routeParams', 'Circuits',
 				Circuits.save(circuit, function(response) {
 					$scope.message = response.message;
 					circuit.id = response.code;
-					circuit.pays = selectedPays;
+					circuit.pays = selectedPays.nom;
 					$scope.circuits.push(circuit);
 				});
 				initForm();
@@ -65,7 +65,7 @@ controllers.controller('CircuitCtrl', [ '$scope', '$routeParams', 'Circuits',
 				circuit.idPays = selectedPays.id;
 				Circuits.update(circuit, function(response) {
 					$scope.message = response.message;
-					circuit.pays = selectedPays;
+					circuit.pays = selectedPays.nom;
 					$scope.circuits[$scope.index] = circuit;
 				});
 
