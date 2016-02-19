@@ -1,6 +1,6 @@
 var raceServices = angular.module('raceServices', [ 'ngResource' ]);
 raceServices.factory('Races', [ '$resource', function($resource) {
-	return $resource('./api/championship/:chpId/grandprix/list', {}, {
+	return $resource('./api/championship/:chpId/tracks', {}, {
 		query : {
 			method : 'GET',
 			params : {
