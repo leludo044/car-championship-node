@@ -26,7 +26,8 @@ class DefaultRouter {
             });
         });
 
-        this.router.put('/', function (request, response) {
+        this.router.put('/:id', function (request, response) {
+            request.body.id = request.params.id ;
             console.log(request.body);
             self.dao.update(request.body, function (err, insertedId) {
                 if (err) {
@@ -44,7 +45,7 @@ class DefaultRouter {
                     if (err) {
                         response.status(409).json({ "message": err });
                     } else {
-                        response.status(201).end();
+                        response.status(201).json({"code":insertedId});
                     }
                 });
             }
