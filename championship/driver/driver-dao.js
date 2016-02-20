@@ -6,14 +6,14 @@ var DefaultDao = require('../default-dao');
 
 class DriverDao extends DefaultDao {
 
-    constructor(dbConnector) {
-        super(dbConnector, 'pilotes', 'Driver');
+    constructor(pool) {
+        super(pool, 'pilotes', 'Driver');
         this.updateStategy = ["nom"];
     }
 
     hasRun(id, callback) {
         if (this.checkId(id)) {
-            this.connection.query('select count(*) as count from resultats where idPilote=?', id,
+            this.pool.query('select count(*) as count from resultats where idPilote=?', id,
                 function (err, rows, fields) {
                     console.log(err);
                     console.log(rows);

@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var process = require("process");
+var mysql = require('mysql');
 
 var DbConnector = require("./dbconnector");
 
@@ -20,19 +21,28 @@ var connector = new DbConnector();
 connector.parse(process.env.GTRCHAMP_DATABASE);
 console.log(connector);
 
-var dao = new ChampionshipDao(connector);
+var pool  = mysql.createPool({
+  connectionLimit : 2,
+  host            : connector.hostname,
+  user            : connector.username,
+  password        : connector.password,
+  database        : connector.database
+});
+
+
+var dao = new ChampionshipDao(pool);
 var championshipRouter = new ChampionshipRouter(dao);
 
-var driverDao = new DriverDao(connector);
+var driverDao = new DriverDao(pool);
 var driverRouter = new DriverRouter(driverDao);
 
-var trackDao = new TrackDao(connector);
+var trackDao = new TrackDao(pool);
 var trackRouter = new TrackRouter(trackDao);
 
-var countryDao = new CountryDao(connector, "pays", "Pays");
+var countryDao = new CountryDao(pool, "pays", "Pays");
 var countryRouter = new DefaultRouter(countryDao);
 
-var statDao = new StatDao(connector);
+var statDao = new StatDao(pool);
 var statRouter = new StatRouter(statDao);
 
 var app = express();

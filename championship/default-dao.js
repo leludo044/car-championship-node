@@ -5,8 +5,9 @@ var util = require("util");
 
 class DefaultDao {
 
-    constructor(dbConnector, tableName, entityName) {
-        this.connect(dbConnector);
+    constructor(pool, tableName, entityName) {
+        //this.connect(dbConnector);
+        this.pool = pool;
         this.tableName = tableName;
         this.entityName = entityName;
         this.queries = {
@@ -32,22 +33,8 @@ class DefaultDao {
         return isValid;
     };
 
-    connect(dbConnector) {
-        this.connection = mysql.createConnection({
-            host: dbConnector.hostname,
-            user: dbConnector.username,
-            password: dbConnector.password,
-            database: dbConnector.database
-        });
-        this.connection.connect();
-    };
-
-    close() {
-        this.connection.end();
-    }
-
     findAll(callback) {
-        this.connection.query(this.queries.findAll,
+        this.pool.query(this.queries.findAll,
             function (err, rows, fields) {
                 if (!err) {
                     callback(rows);
@@ -59,7 +46,7 @@ class DefaultDao {
 
     find(id, callback) {
         if (this.checkId(id)) {
-            this.connection.query(this.queries.find, id,
+            this.pool.query(this.queries.find, id,
                 function (err, rows, fields) {
                     if (!err) {
                         var error;
@@ -78,7 +65,7 @@ class DefaultDao {
     };
 
     create(entity, callback) {
-        this.connection.query(this.queries.create, entity,
+        this.pool.query(this.queries.create, entity,
             function (err, result) {
                 if (err) {
                     console.log(err);
@@ -109,7 +96,7 @@ class DefaultDao {
 
         console.log(query);
         console.log(params);
-        this.connection.query(query, params,
+        this.pool.query(query, params,
             function (err, result) {
                 if (!err) {
                     if (result.affectedRows == 0) {
@@ -123,7 +110,7 @@ class DefaultDao {
     delete(id, callback) {
         let self = this ;
 
-        this.connection.query(this.queries.delete, id,
+        this.pool.query(this.queries.delete, id,
             function (err, result) {
                 if (!err) {
                     if (result.affectedRows == 0) {

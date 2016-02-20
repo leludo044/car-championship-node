@@ -6,15 +6,15 @@ var DefaultDao = require('../default-dao');
 
 class ChampionshipDao extends DefaultDao {
 
-    constructor(dbConnector) {
-        super(dbConnector, 'championnats', 'Championship');
+    constructor(pool) {
+        super(pool, 'championnats', 'Championship');
         this.updateStategy = ["libelle"];
     }
     
     organizeRace(championshipId, trackId, callback) {
         let self = this ;
 
-        this.connection.query('insert into grandsprix set idChampionnat=?, idCircuit=?', [championshipId, trackId],
+        this.pool.query('insert into grandsprix set idChampionnat=?, idCircuit=?', [championshipId, trackId],
             function (err, result) {
                 if (!err) {
                     if (result.affectedRows == 0) {
@@ -28,7 +28,7 @@ class ChampionshipDao extends DefaultDao {
     cancelRace(championshipId, trackId, callback) {
         let self = this ;
 
-        this.connection.query('delete from grandsprix where idChampionnat=? and idCircuit=?', [championshipId, trackId],
+        this.pool.query('delete from grandsprix where idChampionnat=? and idCircuit=?', [championshipId, trackId],
             function (err, result) {
                 if (!err) {
                     if (result.affectedRows == 0) {
@@ -41,7 +41,7 @@ class ChampionshipDao extends DefaultDao {
 
     
     findRaces(championshipId, callback) {
-        this.connection.query(`
+        this.pool.query(`
 select grandsprix.id, circuits.id idCircuit, circuits.nom, circuits.longueur, grandsprix.date, pays.nom pays from grandsprix
 inner join championnats on championnats.id = grandsprix.idChampionnat
 join circuits on circuits.id = grandsprix.idCircuit
@@ -59,7 +59,7 @@ order by grandsprix.date asc
     };
     
     rank(championshipId, callback) {
-        this.connection.query(`
+        this.pool.query(`
 select pilotes.nom, sum(points.points) points 
 from resultats 
 inner join grandsprix on resultats.idGrandPrix = grandsprix.id
@@ -81,7 +81,7 @@ order by points desc`
     }
     
     findResults(raceId, callback) {
-        this.connection.query(`
+        this.pool.query(`
 select pilotes.id idPilote, pilotes.nom, resultats.grille depart, resultats.place arrivee, resultats.numCourse, points.points points 
 from resultats 
 inner join grandsprix on resultats.idGrandPrix = grandsprix.id
@@ -104,7 +104,7 @@ order by numCourse asc, points desc`
     
     findRaceCount(id, callback) {
         if (this.checkId(id)) {
-            this.connection.query('select count(*) as count from grandsprix where idChampionnat=?', id,
+            this.pool.query('select count(*) as count from grandsprix where idChampionnat=?', id,
                 function (err, rows) {
                     if (!err) {
                         console.log(rows);

@@ -6,15 +6,15 @@ var DefaultDao = require('../default-dao');
 
 class TrackDao extends DefaultDao {
 
-    constructor(dbConnector) {
-        super(dbConnector, 'circuits', 'Track');
+    constructor(pool) {
+        super(pool, 'circuits', 'Track');
         this.updateStategy = ["nom", "longueur", "idPays"];
         this.queries.findAll = 'select circuits.*, pays.nom pays from circuits join pays on pays.id = idPays';
     }
     
     wasRun(id, callback) {
         if (this.checkId(id)) {
-            this.connection.query('select count(*) as count from resultats where idGrandPrix=?', id,
+            this.pool.query('select count(*) as count from resultats where idGrandPrix=?', id,
                 function (err, rows, fields) {
                     console.log(err);
                     console.log(rows);
